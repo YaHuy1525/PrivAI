@@ -1,0 +1,40 @@
+{
+    "description": "Vulnerabilities where a contract's logic depends on the block timestamp, which can be manipulated by miners.",
+    "snippets": [
+        {
+            "file": "ether_lotto.sol",
+            "pragma": "0.4.15",
+            "code": "        var random = uint(sha3(block.timestamp)) % 2;\n"
+        },
+        {
+            "file": "governmental_survey.sol",
+            "pragma": "0.4.0",
+            "code": "    lastInvestmentTimestamp = block.timestamp;\n"
+        },
+        {
+            "file": "lottopollo.sol",
+            "pragma": "0.4.0",
+            "code": "    if ( rand> 0 && now - rand > 24 hours ) {\n"
+        },
+        {
+            "file": "lottopollo.sol",
+            "pragma": "0.4.0",
+            "code": "      return block.timestamp;   \n"
+        },
+        {
+            "file": "roulette.sol",
+            "pragma": "0.4.25",
+            "code": "        require(now != pastBlockTime); // only 1 transaction per block\n"
+        },
+        {
+            "file": "roulette.sol",
+            "pragma": "0.4.25",
+            "code": "        pastBlockTime = now;\n"
+        },
+        {
+            "file": "timed_crowdsale.sol",
+            "pragma": "0.4.25",
+            "code": "    return block.timestamp >= 1546300800;\n"
+        }
+    ]
+}

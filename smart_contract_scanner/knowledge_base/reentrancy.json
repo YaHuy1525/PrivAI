@@ -1,0 +1,165 @@
+{
+    "description": "A vulnerability where a contract can be tricked into calling itself multiple times, often to drain funds.",
+    "snippets": [
+        {
+            "file": "0x01f8c4e3fa3edeb29e514cba738d87ce8c091d3f.sol",
+            "pragma": "0.4.19",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0x23a91059fdc9579a9fbd0edc5f2ea0bfdb70deb4.sol",
+            "pragma": "0.4.19",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0x4320e6f8c05b27ab4707cd1f6d5ce6f3e4b3a5a1.sol",
+            "pragma": "0.4.19",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0x4e73b32ed6c35f570686b89848e5f39f20ecc106.sol",
+            "pragma": "0.4.19",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0x561eac93c92360949ab1f1403323e6db345cbf31.sol",
+            "pragma": "0.4.19",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0x627fa62ccbb1c1b04ffaecd72a53e37fc0e17839.sol",
+            "pragma": "0.4.19",
+            "code": "            if(_addr.call.value(_wei)())\n"
+        },
+        {
+            "file": "0x7541b76cb60f4c60af330c208b0623b7f54bf615.sol",
+            "pragma": "0.4.25",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0x7a8721a9d64c74da899424c1b52acbf58ddc9782.sol",
+            "pragma": "0.4.19",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0x7b368c4e805c3870b6c49a3f1f49f69af8662cf3.sol",
+            "pragma": "0.4.25",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0x8c7777c45481dba411450c228cb692ac3d550344.sol",
+            "pragma": "0.4.19",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0x93c32845fae42c83a70e5f06214c8433665c2ab5.sol",
+            "pragma": "0.4.25",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0x941d225236464a25eb18076df7da6a91d0f95e9e.sol",
+            "pragma": "0.4.19",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0x96edbe868531bd23a6c05e9d0c424ea64fb1b78b.sol",
+            "pragma": "0.4.19",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0xaae1f51cf3339f18b6d3f3bdc75a5facd744b0b8.sol",
+            "pragma": "0.4.19",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0xb5e1b1ee15c6fa0e48fce100125569d430f1bd12.sol",
+            "pragma": "0.4.19",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0xb93430ce38ac4a6bb47fb1fc085ea669353fd89e.sol",
+            "pragma": "0.4.19",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0xbaf51e761510c1a11bf48dd87c0307ac8a8c8a4f.sol",
+            "pragma": "0.4.19",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0xbe4041d55db380c5ae9d4a9b9703f1ed4e7e3888.sol",
+            "pragma": "0.4.19",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0xcead721ef5b11f1a7b530171aab69b16c5e66b6e.sol",
+            "pragma": "0.4.25",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "0xf015c35649c82f5467c9c74b7f28ee67665aad68.sol",
+            "pragma": "0.4.25",
+            "code": "            if(msg.sender.call.value(_am)())\n"
+        },
+        {
+            "file": "etherbank.sol",
+            "pragma": "0.4.0",
+            "code": "\t\tif (!(msg.sender.call.value(amountToWithdraw)())) { throw; }\n"
+        },
+        {
+            "file": "etherstore.sol",
+            "pragma": "0.4.10",
+            "code": "        require(msg.sender.call.value(_weiToWithdraw)());\n"
+        },
+        {
+            "file": "modifier_reentrancy.sol",
+            "pragma": "0.4.24",
+            "code": "  function airDrop() hasNoBalance supportsToken  public{\n"
+        },
+        {
+            "file": "reentrance.sol",
+            "pragma": "0.4.18",
+            "code": "      if(msg.sender.call.value(_amount)()) {\n"
+        },
+        {
+            "file": "reentrancy_bonus.sol",
+            "pragma": "0.4.24",
+            "code": "        withdrawReward(recipient); // At this point, the caller will be able to execute getFirstWithdrawalBonus again.\n"
+        },
+        {
+            "file": "reentrancy_cross_function.sol",
+            "pragma": "0.4.24",
+            "code": "        (bool success, ) = msg.sender.call.value(amountToWithdraw)(\"\"); // At this point, the caller's code is executed, and can call transfer()\n"
+        },
+        {
+            "file": "reentrancy_dao.sol",
+            "pragma": "0.4.19",
+            "code": "            bool callResult = msg.sender.call.value(oCredit)();\n"
+        },
+        {
+            "file": "reentrancy_insecure.sol",
+            "pragma": "0.5.0",
+            "code": "        (bool success, ) = msg.sender.call.value(amountToWithdraw)(\"\"); // At this point, the caller's code is executed, and can call withdrawBalance again\n"
+        },
+        {
+            "file": "reentrancy_simple.sol",
+            "pragma": "0.4.15",
+            "code": "         if( ! (msg.sender.call.value(userBalance[msg.sender])() ) ){\n"
+        },
+        {
+            "file": "simple_dao.sol",
+            "pragma": "0.4.2",
+            "code": "      bool res = msg.sender.call.value(amount)();\n"
+        },
+        {
+            "file": "spank_chain_payment.sol",
+            "pragma": "0.4.23",
+            "code": "             Channels[_lcID].partyAddresses[0].transfer(Channels[_lcID].ethBalances[0]);\n"
+        },
+        {
+            "file": "spank_chain_payment.sol",
+            "pragma": "0.4.23",
+            "code": "             require(Channels[_lcID].token.transfer(Channels[_lcID].partyAddresses[0], Channels[_lcID].erc20Balances[0]),\"CreateChannel: token transfer failure\");\n"
+        }
+    ]
+}
