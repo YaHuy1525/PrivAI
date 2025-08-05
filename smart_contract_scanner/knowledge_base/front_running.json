@@ -1,0 +1,40 @@
+{
+    "description": "Vulnerabilities related to the order of transactions in a block.",
+    "snippets": [
+        {
+            "file": "ERC20.sol",
+            "pragma": "0.4.24",
+            "code": "  function approve(address spender, uint256 value) public returns (bool) {\n"
+        },
+        {
+            "file": "ERC20.sol",
+            "pragma": "0.4.24",
+            "code": "    _allowed[msg.sender][spender] = value;\n"
+        },
+        {
+            "file": "FindThisHash.sol",
+            "pragma": "0.4.22",
+            "code": "        require(hash == sha3(solution));\n"
+        },
+        {
+            "file": "eth_tx_order_dependence_minimal.sol",
+            "pragma": "0.4.16",
+            "code": "        owner.transfer(reward);\n"
+        },
+        {
+            "file": "eth_tx_order_dependence_minimal.sol",
+            "pragma": "0.4.16",
+            "code": "        msg.sender.transfer(reward);\n"
+        },
+        {
+            "file": "odds_and_evens.sol",
+            "pragma": "0.4.2",
+            "code": "  function play(uint number) payable{\n"
+        },
+        {
+            "file": "odds_and_evens.sol",
+            "pragma": "0.4.2",
+            "code": "    players[tot] = Player(msg.sender, number);\n"
+        }
+    ]
+}

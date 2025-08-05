@@ -1,0 +1,40 @@
+{
+    "description": "Vulnerabilities that can lead to a contract being rendered inoperable.",
+    "snippets": [
+        {
+            "file": "auction.sol",
+            "pragma": "0.4.15",
+            "code": "      require(currentFrontrunner.send(currentBid));\n"
+        },
+        {
+            "file": "dos_address.sol",
+            "pragma": "0.4.25",
+            "code": "        if(creditorAddresses.length>1500) {\n            creditorAddresses = new address[](0);\n            win = true;\n"
+        },
+        {
+            "file": "dos_number.sol",
+            "pragma": "0.4.25",
+            "code": "        for(uint i=0;i<numbers;i++) {\n            if(numElements == array.length) {\n                array.length += 1;\n            }\n            array[numElements++] = value;\n"
+        },
+        {
+            "file": "dos_simple.sol",
+            "pragma": "0.4.25",
+            "code": "            for(uint i=0;i<350;i++) {\n                listAddresses.push(msg.sender);\n"
+        },
+        {
+            "file": "list_dos.sol",
+            "pragma": "0.4.0",
+            "code": "             creditorAddresses = new address[](0);\n"
+        },
+        {
+            "file": "list_dos.sol",
+            "pragma": "0.4.0",
+            "code": "             creditorAmounts = new uint[](0);\n"
+        },
+        {
+            "file": "send_loop.sol",
+            "pragma": "0.4.24",
+            "code": "            require(refundAddresses[x].send(refunds[refundAddresses[x]])); // doubly bad, now a single failure on send will hold up all funds\n"
+        }
+    ]
+}

@@ -1,0 +1,160 @@
+{
+    "description": "Vulnerabilities arising from predictable or manipulable sources of randomness.",
+    "snippets": [
+        {
+            "file": "blackjack.sol",
+            "pragma": "0.4.9",
+            "code": "\t\tuint b = block.number;\n"
+        },
+        {
+            "file": "blackjack.sol",
+            "pragma": "0.4.9",
+            "code": "\t\tuint timestamp = block.timestamp;\n"
+        },
+        {
+            "file": "blackjack.sol",
+            "pragma": "0.4.9",
+            "code": "\t\treturn uint8(uint256(keccak256(block.blockhash(b), player, cardNumber, timestamp)) % 52);\n"
+        },
+        {
+            "file": "etheraffle.sol",
+            "pragma": "0.4.16",
+            "code": "    uint public blockNumber = block.number;\n"
+        },
+        {
+            "file": "etheraffle.sol",
+            "pragma": "0.4.16",
+            "code": "        address seed1 = contestants[uint(block.coinbase) % totalTickets].addr;\n"
+        },
+        {
+            "file": "etheraffle.sol",
+            "pragma": "0.4.16",
+            "code": "        address seed2 = contestants[uint(msg.sender) % totalTickets].addr;\n"
+        },
+        {
+            "file": "etheraffle.sol",
+            "pragma": "0.4.16",
+            "code": "        uint seed3 = block.difficulty;\n"
+        },
+        {
+            "file": "etheraffle.sol",
+            "pragma": "0.4.16",
+            "code": "        blockNumber = block.number;\n"
+        },
+        {
+            "file": "etheraffle.sol",
+            "pragma": "0.4.16",
+            "code": "            blockNumber = block.number;\n"
+        },
+        {
+            "file": "guess_the_random_number.sol",
+            "pragma": "0.4.21",
+            "code": "        answer = uint8(keccak256(block.blockhash(block.number - 1), now));\n"
+        },
+        {
+            "file": "lottery.sol",
+            "pragma": "0.4.0",
+            "code": "         bool won = (block.number % 2) == 0;\n"
+        },
+        {
+            "file": "lottery.sol",
+            "pragma": "0.4.0",
+            "code": "         bets.push(Bet(msg.value, block.number, won));\n"
+        },
+        {
+            "file": "lucky_doubler.sol",
+            "pragma": "0.4.0",
+            "code": "    function rand(uint max) constant private returns (uint256 result){\n        uint256 factor = FACTOR * 100 / max;\n        uint256 lastBlockNumber = block.number - 1;\n        uint256 hashVal = uint256(block.blockhash(lastBlockNumber));\n"
+        },
+        {
+            "file": "lucky_doubler.sol",
+            "pragma": "0.4.0",
+            "code": "        return uint256((uint256(hashVal) / factor)) % max;\n"
+        },
+        {
+            "file": "old_blockhash.sol",
+            "pragma": "0.4.24",
+            "code": "        bytes32 answer = blockhash(guesses[msg.sender].block);\n"
+        },
+        {
+            "file": "random_number_generator.sol",
+            "pragma": "0.4.25",
+            "code": "  uint256 private salt =  block.timestamp;\n"
+        },
+        {
+            "file": "random_number_generator.sol",
+            "pragma": "0.4.25",
+            "code": "    uint256 y = salt * block.number / (salt % 5);\n"
+        },
+        {
+            "file": "random_number_generator.sol",
+            "pragma": "0.4.25",
+            "code": "    uint256 seed = block.number / 3 + (salt % 300) + y;\n"
+        },
+        {
+            "file": "random_number_generator.sol",
+            "pragma": "0.4.25",
+            "code": "    uint256 h = uint256(blockhash(seed));\n"
+        },
+        {
+            "file": "smart_billions.sol",
+            "pragma": "0.4.13",
+            "code": "            return(betPrize(player,uint24(block.blockhash(player.blockNum))));\n"
+        },
+        {
+            "file": "smart_billions.sol",
+            "pragma": "0.4.13",
+            "code": "            hash = uint24(block.blockhash(player.blockNum));\n"
+        },
+        {
+            "file": "smart_billions.sol",
+            "pragma": "0.4.13",
+            "code": "        return( ( uint(block.blockhash(_lastb  )) & 0xFFFFFF )\n"
+        },
+        {
+            "file": "smart_billions.sol",
+            "pragma": "0.4.13",
+            "code": "            | ( ( uint(block.blockhash(_lastb+1)) & 0xFFFFFF ) << 24 )\n"
+        },
+        {
+            "file": "smart_billions.sol",
+            "pragma": "0.4.13",
+            "code": "            | ( ( uint(block.blockhash(_lastb+2)) & 0xFFFFFF ) << 48 )\n"
+        },
+        {
+            "file": "smart_billions.sol",
+            "pragma": "0.4.13",
+            "code": "            | ( ( uint(block.blockhash(_lastb+3)) & 0xFFFFFF ) << 72 )\n"
+        },
+        {
+            "file": "smart_billions.sol",
+            "pragma": "0.4.13",
+            "code": "            | ( ( uint(block.blockhash(_lastb+4)) & 0xFFFFFF ) << 96 )\n"
+        },
+        {
+            "file": "smart_billions.sol",
+            "pragma": "0.4.13",
+            "code": "            | ( ( uint(block.blockhash(_lastb+5)) & 0xFFFFFF ) << 120 )\n"
+        },
+        {
+            "file": "smart_billions.sol",
+            "pragma": "0.4.13",
+            "code": "            | ( ( uint(block.blockhash(_lastb+6)) & 0xFFFFFF ) << 144 )\n"
+        },
+        {
+            "file": "smart_billions.sol",
+            "pragma": "0.4.13",
+            "code": "            | ( ( uint(block.blockhash(_lastb+7)) & 0xFFFFFF ) << 168 )\n"
+        },
+        {
+            "file": "smart_billions.sol",
+            "pragma": "0.4.13",
+            "code": "            | ( ( uint(block.blockhash(_lastb+8)) & 0xFFFFFF ) << 192 )\n"
+        },
+        {
+            "file": "smart_billions.sol",
+            "pragma": "0.4.13",
+            "code": "            | ( ( uint(block.blockhash(_lastb+9)) & 0xFFFFFF ) << 216 )\n"
+        }
+    ]
+}
