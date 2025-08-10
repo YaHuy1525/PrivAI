@@ -12,11 +12,16 @@ def main():
         "contract_path",
         help="The path to the Solidity (.sol) file to scan."
     )
+    parser.add_argument(
+        "--threshold",
+        type=float,
+        default=0.6,
+        help="The similarity score threshold for reporting vulnerabilities (0.0 to 1.0)."
+    )
     args = parser.parse_args()
 
-    # Initialize the scanner
-    # The scanner will automatically load the knowledge base from the default path
-    scanner = Scanner()
+    # Initialize the scanner with the specified threshold
+    scanner = Scanner(similarity_threshold=args.threshold)
 
     # Scan the contract and get the findings
     findings = scanner.scan_contract(args.contract_path)

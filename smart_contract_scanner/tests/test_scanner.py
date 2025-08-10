@@ -1,41 +1,44 @@
 import unittest
 import os
 import json
+import joblib
+import numpy as np
+from scipy.sparse import csr_matrix
+from sklearn.feature_extraction.text import TfidfVectorizer
 from smart_contract_scanner.scanner import Scanner
 
-class TestScanner(unittest.TestCase):
+class TestTfidfScanner(unittest.TestCase):
 
     def setUp(self):
-        """Set up a dummy knowledge base and a scanner instance."""
-        self.kb_dir = 'smart_contract_scanner/tests/dummy_kb'
+        """Set up a dummy TF-IDF model and knowledge base."""
+        self.kb_dir = 'smart_contract_scanner/tests/dummy_kb_tfidf'
         os.makedirs(self.kb_dir, exist_ok=True)
 
-        # Create a dummy KB file for reentrancy
-        reentrancy_data = {
-            "description": "Test reentrancy description.",
-            "snippets": [{"file": "example.sol", "code": "call.value()"}]
-        }
-        with open(os.path.join(self.kb_dir, 'reentrancy.json'), 'w') as f:
-            json.dump(reentrancy_data, f)
+        # 1. Create a dummy corpus and mapping
+        self.dummy_corpus = [
+            "require(msg.sender.call.value(amount)())", # Reentrancy
+            "balance += amount", # Arithmetic
+            "if (block.timestamp > 123)" # Time manipulation
+        ]
+        self.dummy_mapping = [
+            {"category": "reentrancy", "file": "a.sol", "code": self.dummy_corpus[0]},
+            {"category": "arithmetic", "file": "b.sol", "code": self.dummy_corpus[1]},
+            {"category": "time_manipulation", "file": "c.sol", "code": self.dummy_corpus[2]}
+        ]
 
-        # Create a dummy KB file for time manipulation
-        time_data = {
-            "description": "Test time manipulation description.",
-            "snippets": [{"file": "example.sol", "code": "block.timestamp"}]
-        }
-        with open(os.path.join(self.kb_dir, 'time_manipulation.json'), 'w') as f:
-            json.dump(time_data, f)
+        # 2. Create and fit a dummy vectorizer
+        self.vectorizer = TfidfVectorizer(analyzer='char_wb', ngram_range=(2, 4))
+        self.tfidf_matrix = self.vectorizer.fit_transform(self.dummy_corpus)
 
-        # Create dummy KB for other expected categories
-        unchecked_calls_data = {"description": "Test unchecked calls."}
-        with open(os.path.join(self.kb_dir, 'unchecked_low_level_calls.json'), 'w') as f:
-            json.dump(unchecked_calls_data, f)
+        # 3. Save the dummy model artifacts
+        joblib.dump(self.vectorizer, os.path.join(self.kb_dir, 'tfidf_vectorizer.joblib'))
+        from scipy.sparse import save_npz
+        save_npz(os.path.join(self.kb_dir, 'tfidf_matrix.npz'), self.tfidf_matrix)
+        with open(os.path.join(self.kb_dir, 'vulnerability_mapping.json'), 'w') as f:
+            json.dump(self.dummy_mapping, f)
 
-        bad_randomness_data = {"description": "Test bad randomness."}
-        with open(os.path.join(self.kb_dir, 'bad_randomness.json'), 'w') as f:
-            json.dump(bad_randomness_data, f)
-
-        self.scanner = Scanner(kb_path=self.kb_dir)
+        # 4. Instantiate the scanner
+        self.scanner = Scanner(kb_path=self.kb_dir, similarity_threshold=0.7)
 
     def tearDown(self):
         """Clean up dummy files and directories."""
@@ -45,56 +48,36 @@ class TestScanner(unittest.TestCase):
             for name in dirs:
                 os.rmdir(os.path.join(root, name))
         os.rmdir(self.kb_dir)
-        if os.path.exists('test_contract.sol'):
-            os.remove('test_contract.sol')
+        if os.path.exists('test_contract_tfidf.sol'):
+            os.remove('test_contract_tfidf.sol')
 
-    def test_knowledge_base_loading(self):
-        """Test that the knowledge base is loaded correctly."""
-        self.assertIn('reentrancy', self.scanner.knowledge_base)
-        self.assertIn('time_manipulation', self.scanner.knowledge_base)
-        self.assertEqual(self.scanner.knowledge_base['reentrancy']['description'], "Test reentrancy description.")
+    def test_model_loading(self):
+        """Test that the TF-IDF model and KB are loaded correctly."""
+        self.assertIsNotNone(self.scanner.vectorizer)
+        self.assertIsNotNone(self.scanner.tfidf_matrix)
+        self.assertEqual(len(self.scanner.vulnerability_mapping), 3)
 
     def test_scan_vulnerable_contract(self):
-        """Test scanning a contract with known vulnerabilities."""
-        contract_content = """
-        contract Vulnerable {
-            function withdraw() public {
-                msg.sender.call.value(1 ether)();
-            }
-            function getTime() public view returns (uint) {
-                return block.timestamp;
-            }
-        }
-        """
-        with open('test_contract.sol', 'w') as f:
+        """Test scanning a contract with a highly similar vulnerability."""
+        # This line is very similar to the first entry in our dummy corpus
+        contract_content = "contract A { function withdraw(uint amount) { require(msg.sender.call.value(amount)()); } }"
+        with open('test_contract_tfidf.sol', 'w') as f:
             f.write(contract_content)
 
-        findings = self.scanner.scan_contract('test_contract.sol')
+        findings = self.scanner.scan_contract('test_contract_tfidf.sol')
 
-        categories_found = {f['category'] for f in findings}
-        # The patterns are simple, so they overlap. This is expected.
-        # .call.value() is both reentrancy and unchecked_low_level_calls
-        # block.timestamp is both time_manipulation and bad_randomness
-        self.assertIn('reentrancy', categories_found)
-        self.assertIn('unchecked_low_level_calls', categories_found)
-        self.assertIn('time_manipulation', categories_found)
-        self.assertIn('bad_randomness', categories_found)
-        self.assertEqual(len(findings), 4)
+        self.assertEqual(len(findings), 1)
+        self.assertEqual(findings[0]['vulnerability']['category'], 'reentrancy')
+        self.assertGreater(findings[0]['similarity_score'], self.scanner.similarity_threshold)
 
     def test_scan_safe_contract(self):
-        """Test scanning a contract with no obvious vulnerabilities."""
-        contract_content = """
-        contract Safe {
-            uint public myNumber;
-            function setNumber(uint n) public {
-                myNumber = n;
-            }
-        }
-        """
-        with open('test_contract.sol', 'w') as f:
+        """Test scanning a contract with no similar vulnerabilities."""
+        # This line should have low similarity to our dummy corpus
+        contract_content = "contract B { function safeFunc() public { uint x = 1; } }"
+        with open('test_contract_tfidf.sol', 'w') as f:
             f.write(contract_content)
 
-        findings = self.scanner.scan_contract('test_contract.sol')
+        findings = self.scanner.scan_contract('test_contract_tfidf.sol')
         self.assertEqual(len(findings), 0)
 
 if __name__ == '__main__':
