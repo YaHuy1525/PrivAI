@@ -3,6 +3,10 @@ import os
 from collections import defaultdict
 
 # Define paths
+#The /tmp folder is a standard directory
+#in the operating system used for temporary storage.
+#The main scanner application doesn't use the
+#/tmp directory at all; it relies only on the permanent knowledge_base that was created.
 VULNERABILITIES_JSON_PATH = '/tmp/sb-curated/vulnerabilities.json'
 CONTRACTS_DIR = '/tmp/sb-curated/'
 KNOWLEDGE_BASE_DIR = 'smart_contract_scanner/knowledge_base'
